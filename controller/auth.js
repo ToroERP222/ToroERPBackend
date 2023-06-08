@@ -133,27 +133,26 @@ exports.getUser = async (req,res,next) => {
   res.status(200).json({succes:true, data:users})
 }
 const sendTokenResponse = (user, statusCode, res) => {
-  const jwtsecret= 'eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY1NjYxNDE4MCwiaWF0IjoxNjU2NjE0MTgwfQ.k3oi-VVFuWP45NVlPcMdosiyxmYmjK6Olse6UDK679g';
+  const jwtsecret = '...'; // Your JWT secret
+
   // Create token
-  
-  const token = jwt.sign({ clave:user }, jwtsecret, {
-    expiresIn: '5h'
+  const token = jwt.sign({ clave: user }, jwtsecret, {
+    expiresIn: '5h',
   });
 
   const options = {
-    expires: new Date(
-      Date.now() + 30 * 24 * 60 * 60 * 1000
-    ),
-  
+    expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    secure: true, // Set the secure flag to true
+    httpOnly: true,
+    // You can also set the 'sameSite' option to 'None' if needed
   };
 
-
-  
   res
-    .status(201)
+    .status(statusCode)
     .cookie('token', token, options)
     .json({
       success: true,
-      token
+      token,
     });
 };
+
