@@ -29,8 +29,8 @@ const PORT = 5000;
 connectDB()
 app.use(cors());
 app.use(cookieParser())
-dotenv.config({ path: './config/config.env' })
 
+dotenv.config();
 var allowCrossDomain = function(req, res, next) {
   if ('OPTIONS' == req.method) {
     res.header('Access-Control-Allow-Origin', '*');
