@@ -133,7 +133,7 @@ exports.getUser = async (req,res,next) => {
   res.status(200).json({succes:true, data:users})
 }
 const sendTokenResponse = (user, statusCode, res) => {
-  const jwtsecret = '...'; // Your JWT secret
+  const jwtsecret = 'eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY1NjYxNDE4MCwiaWF0IjoxNjU2NjE0MTgwfQ.k3oi-VVFuWP45NVlPcMdosiyxmYmjK6Olse6UDK679g'; // Your JWT secret
 
   // Create token
   const token = jwt.sign({ clave: user }, jwtsecret, {
