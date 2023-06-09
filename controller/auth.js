@@ -8,7 +8,7 @@ const User = require('../models/user');
 // @access    Public
 exports.register = async (req, res, next) => {
   const { nombre, clave, password, role } = req.body;
-  const salt = await bcrypt.genSalt(10);
+  const salt = await bcrypt.genSalt(15);
   let passw = await bcrypt.hash(password, salt);
   console.log(req.body)
   // Create user
