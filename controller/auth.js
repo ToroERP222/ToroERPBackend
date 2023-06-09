@@ -71,40 +71,44 @@ exports.logout = async (req, res, next) => {
 // @route     POST /api/v1/auth/me
 // @access    Private
 exports.getMe = async (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*')
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
-    let decoded;
-    const token = req.query.token;
-    console.log(token)
-    const jwtsecret= 'eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY1NjYxNDE4MCwiaWF0IjoxNjU2NjE0MTgwfQ.k3oi-VVFuWP45NVlPcMdosiyxmYmjK6Olse6UDK679g';
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+  let decoded;
+  const token = req.query.token;
+  console.log(token)
+  const jwtsecret= 'eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY1NjYxNDE4MCwiaWF0IjoxNjU2NjE0MTgwfQ.k3oi-VVFuWP45NVlPcMdosiyxmYmjK6Olse6UDK679g';
 
-    if (token) {
-      try {
-        decoded = jwt.verify(token, jwtsecret);
-        
-      } catch (e) {
-        console.error(e);
+  if (token) {
+    try {
+      decoded = jwt.verify(token, jwtsecret);
+
+      if (decoded.exp < Date.now() / 1000) {
+        // Token expired
+        return res.status(401).json({ success: false, message: 'Token expired' });
       }
+    } catch (e) {
+      console.error(e);
     }
-    
-    
-    
-    if (decoded) {
-      const clav = decoded.clave
-      console.log(decoded.clave)
-      const user = await User.find({clave:clav});
-      console.log(user)
+  } else {
+    return res.status(401).json({ success: false, message: 'No token provided' });
+  }
 
-      res.status(200).json({
-        success: true,
-        data: user
-      });
-      
-    } else {
-      res.status(401).json({success:false,message: 'Unable to auth'});
-    }
+  if (decoded) {
+    const clav = decoded.clave
+    console.log(decoded.clave)
+    const user = await User.find({ clave: clav });
+    console.log(user)
 
+    res.status(200).json({
+      success: true,
+      data: user
+    });
+
+  } else {
+    res.status(401).json({ success: false, message: 'Unable to authenticate' });
+  }
 }
+
 
 // @desc      Update user details
 // @route     PUT /api/v1/auth/updatedetails
