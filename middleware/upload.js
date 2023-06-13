@@ -1,7 +1,7 @@
 var multer = require('multer');
  const uuidv4 = require('uuid/v4')
  const os = require("os")
-const dir = os.homedir() +'/sistema/bc/uploads'
+const dir = os.homedir() 
   
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
