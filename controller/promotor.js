@@ -42,9 +42,9 @@ const folio = () => {
 const fs = require('fs');
 
 exports.createVisita = async (req, res, next) => {
-  console.log(req.body);
+  console.log(process.cwd());
   
-  const url = req.protocol + '://' + req.get('host') + '/uploads';
+
   const imageData = fs.readFileSync(req.file.path); // Read the image file
   
   var obj = req.body;
