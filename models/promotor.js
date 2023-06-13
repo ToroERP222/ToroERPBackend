@@ -61,7 +61,7 @@ const VisitaSchema = new mongoose.Schema({
         maxlength: 150
 
     },
-    img:{type:String,required:true},
+    img: { type: Buffer, required: true },
     estatus:{type:String,required:false}
 
 

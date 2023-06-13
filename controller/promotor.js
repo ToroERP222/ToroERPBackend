@@ -39,38 +39,45 @@ const folio = () => {
 }
 
 
-exports.createVisita = async (req,res,next) => {
-  console.log(req.body)
-  const url = req.protocol + '://' + req.get('host')+'/uploads'
-    var obj = req.body
-    obj.img = url+'/'+req.file.filename
-    const query = Visita.find()
-    obj.productos = JSON.parse(obj.productos)
-    query.count(function (err, count) {
-         obj.folio = count
-         console.log(obj.folio)
-         const visita = Visita.create(obj,
-          (err, item) => {
-            if (err) {
-                console.log(err);
-            }}
-            )
-        console.log(obj)
-        res.status(201).json({
-              success: true,
-              data: visita
-            });
-        
+const fs = require('fs');
+
+exports.createVisita = async (req, res, next) => {
+  console.log(req.body);
+  
+  const url = req.protocol + '://' + req.get('host') + '/uploads';
+  const imageData = fs.readFileSync(req.file.path); // Read the image file
+  
+  var obj = req.body;
+  obj.img = imageData; // Save the image data in the 'img' property
+  
+  const query = Visita.find();
+  obj.productos = JSON.parse(obj.productos);
+  
+  query.count(async function (err, count) {
+    obj.folio = count;
+    console.log(obj.folio);
     
-    })
-   
+    try {
+      const visita = await Visita.create(obj); // Save the object with the image data
+      console.log(obj);
+      
+      // Remove the image file from the server
+      fs.unlinkSync(req.file.path);
+      
+      res.status(201).json({
+        success: true,
+        data: visita,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        success: false,
+        message: 'Error saving the visita',
+      });
+    }
+  });
+};
 
-
-
-    
-
-    
-  }
 
 exports.getVisita = async (req,res,next) => {
   let fecha = req.params.fecha
