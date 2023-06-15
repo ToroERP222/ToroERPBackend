@@ -77,6 +77,32 @@ exports.createVisita = async (req, res, next) => {
     }
   });
 };
+exports.deleteVisitaById = async (req, res, next) => {
+  try {
+    const visitaId = req.params.id;
+    const visita = await Visita.findById(visitaId);
+    
+    if (!visita) {
+      return res.status(404).json({
+        success: false,
+        message: 'Visita not found',
+      });
+    }
+    
+    await visita.remove();
+    
+    res.status(200).json({
+      success: true,
+      message: 'Visita deleted successfully',
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: 'An error occurred',
+    });
+  }
+};
 
 
 exports.getVisita = async (req,res,next) => {
