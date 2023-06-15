@@ -115,7 +115,7 @@ exports.getVisita = async (req,res,next) => {
 }
 exports.getVisitas = async (req,res,next) => {
   
-  const visita = await Visita.find().select('-image');
+  const visita = await Visita.find().select('-img');
 
 
   res.status(200).json({
