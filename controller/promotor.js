@@ -58,7 +58,7 @@ exports.createVisita = async (req, res, next) => {
       console.log(obj);
       
       // Remove the image file from the server
-      fs.unlinkSync(req.file.path);
+     
       
       res.status(201).json({
         success: true,
