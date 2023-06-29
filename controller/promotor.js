@@ -46,7 +46,7 @@ exports.createVisita = async (req, res, next) => {
   
   var obj = req.body;
  // Save the image data in the 'img' property
-  console.log(imageData)
+ 
   const query = Visita.find();
   obj.productos = JSON.parse(obj.productos);
   query.count(async function (err, count) {
