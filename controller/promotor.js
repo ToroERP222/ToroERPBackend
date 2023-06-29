@@ -44,15 +44,11 @@ const fs = require('fs');
 exports.createVisita = async (req, res, next) => {
   console.log(process.cwd());
   
-
-  const imageData = fs.readFileSync(req.file.path); // Read the image file
-  
   var obj = req.body;
-  obj.img = imageData; // Save the image data in the 'img' property
+ // Save the image data in the 'img' property
   console.log(imageData)
   const query = Visita.find();
   obj.productos = JSON.parse(obj.productos);
-  
   query.count(async function (err, count) {
     obj.folio = count;
     console.log(obj.folio);
